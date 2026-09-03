@@ -1,0 +1,34 @@
+.upload-zone {
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--color-bg);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.upload-zone:hover { border-color: var(--color-primary); }
+.upload-zone.is-dragging { border-color: var(--color-primary); background: #eaf4ee; }
+.upload-zone.has-file { padding: 16px; text-align: left; cursor: default; }
+
+.upload-zone__icon { font-size: 40px; color: var(--color-primary); }
+.upload-zone__title { font-weight: 600; margin-top: 8px; font-size: 0.92rem; }
+.upload-zone__hint { color: var(--color-text-muted); font-size: 0.8rem; margin-top: 4px; }
+
+.upload-zone__preview { display: flex; align-items: center; gap: 14px; }
+.upload-zone__preview img {
+  width: 64px; height: 64px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+.upload-zone__preview-info { flex: 1; min-width: 0; }
+.upload-zone__filename { font-size: 0.85rem; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.upload-zone__remove {
+  display: inline-flex; align-items: center; gap: 4px;
+  border: none; background: none; cursor: pointer;
+  color: var(--color-danger); font-size: 0.78rem; font-weight: 600;
+  padding: 4px 0; margin-top: 4px;
+}
+.upload-zone__remove .material-symbols-outlined { font-size: 16px; }

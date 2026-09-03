@@ -1,0 +1,60 @@
+.data-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+.data-card__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  min-width: 260px;
+}
+.search-box input { border: none; background: transparent; outline: none; font-size: 0.85rem; width: 100%; }
+.search-box .material-symbols-outlined { font-size: 18px; color: var(--color-text-muted); }
+
+.tab-pills { display: flex; gap: 4px; background: var(--color-bg); padding: 4px; border-radius: var(--radius-sm); }
+.tab-pill { border: none; background: none; padding: 7px 14px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; color: var(--color-text-muted); cursor: pointer; }
+.tab-pill.is-active { background: var(--color-surface); color: var(--color-primary); box-shadow: var(--shadow-card); }
+
+.data-table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  text-align: left;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+.data-table td { padding: 14px 20px; border-bottom: 1px solid var(--color-border); vertical-align: middle; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: var(--color-bg); }
+
+.doc-thumb { width: 44px; height: 44px; object-fit: cover; border-radius: var(--radius-sm); cursor: pointer; border: 1px solid var(--color-border); }
+.cell-title { font-weight: 600; font-size: 0.88rem; }
+.cell-sub { font-size: 0.8rem; color: var(--color-text-muted); }
+.empty-cell { text-align: center; padding: 40px; color: var(--color-text-muted); }
+
+.row-actions { display: flex; gap: 8px; }
+.btn-sm { padding: 6px 12px; font-size: 0.78rem; }
+
+.image-modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+}
+.image-modal img { max-width: 90%; max-height: 85vh; border-radius: var(--radius-md); }

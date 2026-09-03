@@ -1,0 +1,109 @@
+/* ===== Design tokens, read from your reference screenshots ===== */
+:root {
+  --color-primary: #145c3f;        /* deep forest green — logo, headings, primary buttons */
+  --color-primary-dark: #0d4530;
+  --color-accent: #f0c419;         /* gold — mobile money / CTA buttons, limited-stock badge */
+  --color-accent-dark: #d9ad00;
+  --color-danger: #d92d2d;
+
+  --color-bg: #f4f5fc;             /* page background — soft lavender */
+  --color-sidebar: #dde3f9;        /* sidebar / footer band */
+  --color-surface: #ffffff;        /* card background */
+  --color-border: #e3e5f0;
+
+  --color-text: #14171f;
+  --color-text-muted: #5b5f6b;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 999px;
+
+  --shadow-card: 0 4px 20px rgba(20, 23, 31, 0.06);
+  --shadow-lifted: 0 10px 30px rgba(20, 23, 31, 0.08);
+
+  --font-heading: 'Poppins', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+
+  --container-max: 1280px;
+  --gutter: 24px;
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { font-family: var(--font-heading); color: var(--color-text); margin: 0; }
+p { margin: 0; }
+a { color: inherit; }
+button, input, textarea, select { font-family: inherit; }
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ===== Buttons (shared across the app) ===== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: transform 0.15s ease, background 0.15s ease, opacity 0.15s ease;
+}
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-primary { background: var(--color-primary); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: var(--color-primary-dark); }
+
+.btn-accent { background: var(--color-accent); color: #1a1a1a; }
+.btn-accent:hover:not(:disabled) { background: var(--color-accent-dark); }
+
+.btn-outline { background: transparent; border: 1.5px solid var(--color-text); color: var(--color-text); }
+.btn-outline:hover:not(:disabled) { background: var(--color-surface); }
+
+.btn-block { width: 100%; }
+
+/* ===== Form fields (shared) ===== */
+.field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.field label { font-size: 0.85rem; color: var(--color-text-muted); font-weight: 500; }
+.field input,
+.field textarea {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+.field input:focus,
+.field textarea:focus { border-color: var(--color-primary); }
+
+/* ===== Badges ===== */
+.badge { padding: 4px 10px; border-radius: var(--radius-full); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+.badge--stock { background: var(--color-primary); color: #fff; }
+.badge--limited { background: var(--color-accent); color: #1a1a1a; }
+.badge--pending { background: var(--color-accent); color: #1a1a1a; }
+.badge--approved { background: var(--color-primary); color: #fff; }
+.badge--rejected { background: #ffe1e1; color: var(--color-danger); }
+
+#gigs { scroll-margin-top: 90px; }

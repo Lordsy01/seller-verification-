@@ -1,0 +1,51 @@
+.buy-modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100; padding: 20px;
+}
+.buy-modal {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  box-shadow: var(--shadow-lifted);
+}
+.buy-modal__close {
+  position: absolute; top: 16px; right: 16px;
+  background: none; border: none; cursor: pointer;
+  color: var(--color-text-muted); display: flex;
+}
+.buy-modal h2 { font-size: 1.3rem; font-weight: 700; margin-bottom: 16px; }
+
+.buy-modal__product { display: flex; gap: 12px; align-items: center; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border); }
+.buy-modal__product img { width: 56px; height: 56px; object-fit: cover; border-radius: var(--radius-sm); }
+.buy-modal__title { font-weight: 600; font-size: 0.9rem; }
+.buy-modal__price { color: var(--color-primary); font-weight: 700; font-size: 0.9rem; margin-top: 2px; }
+
+.buy-modal .payment-options { display: flex; gap: 10px; }
+.buy-modal .payment-option {
+  flex: 1; padding: 12px; border: 1.5px solid var(--color-border); border-radius: var(--radius-sm);
+  background: var(--color-bg); font-weight: 600; font-size: 0.8rem; cursor: pointer;
+}
+.buy-modal .payment-option.is-active { border-color: var(--color-primary); background: #eaf4ee; color: var(--color-primary); }
+
+.buy-modal__status { text-align: center; padding: 12px 0; }
+.buy-modal__status h2 { margin: 14px 0 8px; }
+.buy-modal__status p { color: var(--color-text-muted); font-size: 0.88rem; margin-bottom: 16px; }
+
+.buy-modal-spinner {
+  width: 40px; height: 40px;
+  border: 4px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  margin: 0 auto;
+  animation: buy-modal-spin 0.8s linear infinite;
+}
+@keyframes buy-modal-spin { to { transform: rotate(360deg); } }
+
+.buy-modal-icon { font-size: 48px; }
+.buy-modal-icon--success { color: var(--color-primary); }
+.buy-modal-icon--failed { color: var(--color-danger); }
