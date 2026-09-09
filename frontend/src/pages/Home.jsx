@@ -1,7 +1,7 @@
-import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
-import ProductsGrid from '../components/ProductsGrid';
-import Footer from '../components/Footer';
+import Navbar from '../shared/components/Navbar';
+import Hero from '../shared/components/Hero';
+import ProductsGrid from '../features/products/components/ProductsGrid';
+import Footer from '../shared/components/Footer';
 
 function Home() {
   return (

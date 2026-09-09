@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const User = require('../models/User');
+const User = require('../features/auth/User');
 
 async function resetAdmin() {
   await mongoose.connect(process.env.MONGO_URI);
