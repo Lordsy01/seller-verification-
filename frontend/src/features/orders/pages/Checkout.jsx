@@ -5,6 +5,9 @@ import { useCart } from '../CartContext';
 import Navbar from '../../../shared/components/Navbar';
 import './Checkout.css';
 
+
+const STORAGE_KEY = 'pendingCheckoutOrder';
+
 function Checkout() {
   const { items, subtotal, clearCart } = useCart();
   const navigate = useNavigate();
@@ -19,13 +22,24 @@ function Checkout() {
   const deliveryFee = items.length > 0 ? 2500 : 0;
   const total = subtotal + deliveryFee;
 
+  // on mount: check if a payment was already in progress before the refresh
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      const { orderId: savedId, phone: savedPhone } = JSON.parse(saved);
+      setOrderId(savedId);
+      setPhone(savedPhone);
+      setStage('pending');
+      startPolling(savedId);
+    }
+  }, []);
+
   useEffect(() => {
     if (items.length === 0 && stage === 'form') {
       navigate('/cart');
     }
   }, [items, stage]);
 
-  // clean up the polling interval if the component unmounts mid-payment
   useEffect(() => () => clearInterval(pollRef.current), []);
 
   const handleSubmit = async (e) => {
@@ -46,6 +60,10 @@ function Checkout() {
 
       setOrderId(res.data.orderId);
       setStage('pending');
+
+      // persist so a refresh can resume this exact payment instead of losing it
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ orderId: res.data.orderId, phone }));
+
       startPolling(res.data.orderId);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to start payment.');
@@ -58,18 +76,26 @@ function Checkout() {
         const res = await api.get(`/orders/${id}/status`);
         if (res.data.status === 'paid') {
           clearInterval(pollRef.current);
+          localStorage.removeItem(STORAGE_KEY);
           clearCart();
           setStage('paid');
         } else if (res.data.status === 'failed') {
           clearInterval(pollRef.current);
+          localStorage.removeItem(STORAGE_KEY);
           setStage('failed');
           setError(res.data.message || 'Payment failed.');
         }
-        // if still 'pending', the interval just keeps checking
+        // still pending — keep polling, storage stays as-is
       } catch (err) {
         // network hiccup — keep polling, don't hard-fail on one missed check
       }
-    }, 3000); // check every 3 seconds
+    }, 3000);
+  };
+
+  const handleRetry = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    setStage('form');
+    setOrderId(null);
   };
 
   return (
@@ -83,31 +109,17 @@ function Checkout() {
             <form className="checkout-form" onSubmit={handleSubmit}>
               <h2>Payment Method</h2>
               <div className="payment-options">
-                <button
-                  type="button"
-                  className={`payment-option ${paymentMethod === 'momo' ? 'is-active' : ''}`}
-                  onClick={() => setPaymentMethod('momo')}
-                >
+                <button type="button" className={`payment-option ${paymentMethod === 'momo' ? 'is-active' : ''}`} onClick={() => setPaymentMethod('momo')}>
                   MTN Mobile Money
                 </button>
-                <button
-                  type="button"
-                  className={`payment-option ${paymentMethod === 'om' ? 'is-active' : ''}`}
-                  onClick={() => setPaymentMethod('om')}
-                >
+                <button type="button" className={`payment-option ${paymentMethod === 'om' ? 'is-active' : ''}`} onClick={() => setPaymentMethod('om')}>
                   Orange Money
                 </button>
               </div>
 
               <div className="field" style={{ marginTop: 20 }}>
                 <label>Phone Number</label>
-                <input
-                  type="tel"
-                  placeholder="237677777777"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  required
-                />
+                <input type="tel" placeholder="237677777777" value={phone} onChange={(e) => setPhone(e.target.value)} required />
               </div>
 
               {error && <p className="auth-error">{error}</p>}
@@ -141,8 +153,8 @@ function Checkout() {
         {stage === 'pending' && (
           <div className="checkout-status">
             <div className="checkout-status__spinner" />
-            <h2>it might take a momment</h2>
-            <p>be patient {phone}. This page will update automatically once you approve it.</p>
+            <h2>Approve the payment on your phone</h2>
+            <p>A prompt was sent to {phone}. This page will update automatically once you approve it — you can safely refresh or come back later.</p>
           </div>
         )}
 
@@ -160,7 +172,7 @@ function Checkout() {
             <span className="material-symbols-outlined checkout-status__icon checkout-status__icon--failed">error</span>
             <h2>Payment Failed</h2>
             <p>{error || 'The transaction was not completed.'}</p>
-            <button className="btn btn-primary" onClick={() => setStage('form')}>Try Again</button>
+            <button className="btn btn-primary" onClick={handleRetry}>Try Again</button>
           </div>
         )}
       </div>
