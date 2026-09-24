@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import api from '../api';
+import api from '../../../shared/api';
 import AdminLayout from '../layouts/AdminLayout';
 import './AdminDashboard.css';
 

@@ -16,6 +16,7 @@ import Checkout from './features/orders/pages/Checkout';
 import ProductDetail from './features/products/pages/ProductDetail';
 import OrderHistory from './features/orders/pages/OrderHistory';
 import SellerOrders from './features/orders/pages/SellerOrders';
+import MyMessages from './features/Messages/MyMessages';
 
 import AdminOverview from './features/admin/pages/AdminOverview';
 import AdminDashboard from './features/admin/pages/AdminDashboard';
@@ -23,8 +24,7 @@ import AdminProducts from './features/admin/pages/AdminProducts';
 import AdminUsers from './features/admin/pages/AdminUsers';
 import AdminSettings from './features/admin/pages/AdminSettings';
 import AdminHelp from './features/admin/pages/AdminHelp';
-import MyMessages from './features/Messages/MyMessages';
-
+import AdminMessages from './features/admin/pages/AdminMessages';
 
 function App() {
   return (
@@ -32,28 +32,30 @@ function App() {
       <CartProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/my-messages" element={<MyMessages />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/change-password" element={<ChangePassword />} />
+
+            <Route path="/become-seller" element={<SellerUpload />} />
+            <Route path="/post-gig" element={<PostGig />} />
+            <Route path="/product/:id" element={<ProductDetail />} />
+
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/orders" element={<OrderHistory />} />
+            <Route path="/seller/orders" element={<SellerOrders />} />
+            <Route path="/my-messages" element={<MyMessages />} />
+
             <Route path="/admin" element={<AdminRoute><AdminOverview /></AdminRoute>} />
             <Route path="/admin/verifications" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
             <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />
             <Route path="/admin/vendors" element={<AdminRoute><AdminUsers /></AdminRoute>} />
+            <Route path="/admin/messages" element={<AdminRoute><AdminMessages /></AdminRoute>} />
             <Route path="/admin/settings" element={<AdminRoute><AdminSettings /></AdminRoute>} />
             <Route path="/admin/help" element={<AdminRoute><AdminHelp /></AdminRoute>} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/orders" element={<OrderHistory />} />
-            <Route path="/seller/orders" element={<SellerOrders />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/post-gig" element={<PostGig />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/change-password" element={<ChangePassword />} />
-            <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-            <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/become-seller" element={<SellerUpload />} />
-            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </BrowserRouter>
       </CartProvider>

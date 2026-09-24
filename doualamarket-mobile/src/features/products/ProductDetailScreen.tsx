@@ -40,7 +40,7 @@ export default function ProductDetailScreen() {
 
   return (
     <View style={{ flex: 1 }}>
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 100 }}>
         <TouchableOpacity style={styles.backBtn} onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={22} color="#14171F" />
         </TouchableOpacity>
@@ -65,28 +65,16 @@ export default function ProductDetailScreen() {
             </View>
           </View>
 
+          <TouchableOpacity style={styles.buyButton} onPress={() => setShowBuy(true)}>
+            <Text style={styles.buyButtonText}>Buy Now</Text>
+          </TouchableOpacity>
+
           <View style={styles.vendorBox}>
-            <View style={styles.vendorAvatar}>
-              <Text style={styles.vendorInitial}>{product.seller?.name?.[0] || 'V'}</Text>
-            </View>
-            <View>
-              <Text style={styles.vendorName}>{product.seller?.name}</Text>
-              {product.seller?.verificationStatus === 'approved' && (
-                <View style={styles.verifiedRow}>
-                  <Ionicons name="checkmark-circle" size={13} color="#145C3F" />
-                  <Text style={styles.verifiedText}>Verified Vendor</Text>
-                </View>
-              )}
-            </View>
+            <Ionicons name="shield-checkmark" size={22} color="#145C3F" />
+            <Text style={styles.vendorName}>Sold by a verified DoualaMarket vendor</Text>
           </View>
         </View>
       </ScrollView>
-
-      <View style={styles.footer}>
-        <TouchableOpacity style={styles.buyButton} onPress={() => setShowBuy(true)}>
-          <Text style={styles.buyButtonText}>Buy Now</Text>
-        </TouchableOpacity>
-      </View>
 
       {showBuy && (
         <BuyNowSheet
@@ -98,7 +86,6 @@ export default function ProductDetailScreen() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#F7F8FC' },
   centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
@@ -113,19 +100,14 @@ const styles = StyleSheet.create({
   price: { fontSize: 22, fontWeight: '800', color: '#145C3F', marginTop: 8 },
   priceCurrency: { fontSize: 12, fontWeight: '600', color: '#5B5F6B' },
   desc: { color: '#5B5F6B', marginTop: 14, lineHeight: 20 },
-  qtyRow: { flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 20 },
+  qtyRow: { flexDirection: 'row', alignItems: 'center', gap: 16, marginTop: 16 },
   qtyLabel: { fontWeight: '600' },
   qtyControl: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#fff', borderRadius: 8, paddingHorizontal: 4 },
   qtyBtn: { padding: 10 },
   qtyBtnText: { fontSize: 18, fontWeight: '700', color: '#145C3F' },
   qtyValue: { fontWeight: '600', minWidth: 24, textAlign: 'center' },
-  vendorBox: { flexDirection: 'row', alignItems: 'center', gap: 12, backgroundColor: '#fff', borderRadius: 10, padding: 14, marginTop: 24 },
-  vendorAvatar: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#145C3F', justifyContent: 'center', alignItems: 'center' },
-  vendorInitial: { color: '#fff', fontWeight: '700' },
-  vendorName: { fontWeight: '700', fontSize: 13.5 },
-  verifiedRow: { flexDirection: 'row', alignItems: 'center', gap: 3, marginTop: 2 },
-  verifiedText: { color: '#145C3F', fontSize: 11.5, fontWeight: '600' },
-  footer: { padding: 16, backgroundColor: '#fff', borderTopWidth: 1, borderTopColor: '#E3E5F0' },
-  buyButton: { backgroundColor: '#F0C419', borderRadius: 10, padding: 16, alignItems: 'center' },
+  buyButton: { backgroundColor: '#F0C419', borderRadius: 10, padding: 16, alignItems: 'center', marginTop: 18 },
   buyButtonText: { fontWeight: '700', fontSize: 15, color: '#14171F' },
+  vendorBox: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: '#fff', borderRadius: 10, padding: 14, marginTop: 18 },
+  vendorName: { fontWeight: '600', fontSize: 13.5, flex: 1 },
 });
