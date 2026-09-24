@@ -4,16 +4,21 @@ import { useAuth } from '../../auth/AuthContext';
 import './AdminLayout.css';
 
 const navItems = [
-  { section: 'Main Menu', items: [
-    { label: 'Overview', icon: 'space_dashboard', to: '/admin' },
-    { label: 'Verifications', icon: 'verified_user', to: '/admin/verifications' },
-    { label: 'Products', icon: 'inventory_2', to: '/admin/products' },
-    { label: 'Vendors', icon: 'storefront', to: '/admin/vendors' },
-  ]},
-  { section: 'Others', items: [
-    { label: 'Settings', icon: 'settings', to: '/admin/settings' },
-    { label: 'Help & Support', icon: 'help', to: '/admin/help' },
-  ]},
+  {
+    section: 'Main Menu', items: [
+      { label: 'Overview', icon: 'space_dashboard', to: '/admin' },
+      { label: 'Verifications', icon: 'verified_user', to: '/admin/verifications' },
+      { label: 'Products', icon: 'inventory_2', to: '/admin/products' },
+      { label: 'Vendors', icon: 'storefront', to: '/admin/vendors' },
+      { label: 'Messages', icon: 'chat', to: '/admin/messages' },
+    ]
+  },
+  {
+    section: 'Others', items: [
+      { label: 'Settings', icon: 'settings', to: '/admin/settings' },
+      { label: 'Help & Support', icon: 'help', to: '/admin/help' },
+    ]
+  },
 ];
 
 function AdminLayout({ children }) {

@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const orderRoutes = require('./features/orders/orderRoutes');
+const messageRoutes = require('./features/messages/messageRoutes');
 
 const authRoutes = require('./features/auth/authRoutes');
 const verificationRoutes = require('./features/verification/verificationRoutes');
@@ -10,6 +11,7 @@ const gigRoutes = require('./features/products/gigRoutes');
 const userRoutes = require('./features/users/userRoutes');
 const app = express();
 
+app.use('/api/messages', messageRoutes);
 
 app.use(cors({
   origin: 'http://localhost:5173',

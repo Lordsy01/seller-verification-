@@ -23,6 +23,8 @@ import AdminProducts from './features/admin/pages/AdminProducts';
 import AdminUsers from './features/admin/pages/AdminUsers';
 import AdminSettings from './features/admin/pages/AdminSettings';
 import AdminHelp from './features/admin/pages/AdminHelp';
+import MyMessages from './features/Messages/MyMessages';
+
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
       <CartProvider>
         <BrowserRouter>
           <Routes>
+            <Route path="/my-messages" element={<MyMessages />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/admin" element={<AdminRoute><AdminOverview /></AdminRoute>} />

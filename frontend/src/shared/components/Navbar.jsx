@@ -1,12 +1,14 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../features/auth/AuthContext';
-import './Navbar.css';
 import { useCart } from '../../features/orders/CartContext';
+import MessageModal from '../../features/messages/components/MessageModal';
+import './Navbar.css';
 
 function Navbar() {
   const { user, logout } = useAuth();
   const { itemCount } = useCart();
-
+  const [showMessage, setShowMessage] = useState(false);
 
   return (
     <header className="site-header">
@@ -31,16 +33,35 @@ function Navbar() {
                   + Post Product
                 </Link>
               )}
+
+              {user.role === 'buyer' && (
+                <>
+                  <button className="icon-btn" title="Message Us" onClick={() => setShowMessage(true)}>
+                    <span className="material-symbols-outlined">chat</span>
+                  </button>
+                  <Link to="/my-messages" className="icon-btn" title="My Messages">
+                    <span className="material-symbols-outlined">mail</span>
+                  </Link>
+                  <Link to="/cart" className="icon-btn" title="Cart">
+                    <span className="material-symbols-outlined">shopping_cart</span>
+                    {itemCount > 0 && <span className="badge-count">{itemCount}</span>}
+                  </Link>
+                  <Link to="/orders" className="icon-btn" title="My orders">
+                    <span className="material-symbols-outlined">receipt_long</span>
+                  </Link>
+                </>
+              )}
+
               {user.role === 'seller' && (
                 <Link to="/seller/orders" className="icon-btn" title="Orders received">
                   <span className="material-symbols-outlined">receipt_long</span>
                 </Link>
               )}
-              {user.role === 'buyer' && (
-                <Link to="/orders" className="icon-btn" title="My orders">
-                  <span className="material-symbols-outlined">receipt_long</span>
-                </Link>
-              )}
+
+              <Link to="/change-password" className="icon-btn" title="Change password">
+                <span className="material-symbols-outlined">lock_reset</span>
+              </Link>
+
               <span className="user-chip">Hi, <strong>{user.name}</strong></span>
               <button onClick={logout} className="icon-btn" title="Log out">
                 <span className="material-symbols-outlined">logout</span>
@@ -50,17 +71,12 @@ function Navbar() {
             <>
               <Link to="/login" className="icon-btn"><span className="material-symbols-outlined">account_circle</span></Link>
               <Link to="/signup" className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '0.85rem' }}>Sign Up</Link>
-              <Link to="/change-password" className="icon-btn" title="Change password">
-               <span className="material-symbols-outlined">lock_reset</span>
-              </Link>
-              <Link to="/cart" className="icon-btn">
-                <span className="material-symbols-outlined">shopping_cart</span>
-                {itemCount > 0 && <span className="badge-count">{itemCount}</span>}
-              </Link>
             </>
           )}
         </div>
       </div>
+
+      {showMessage && <MessageModal onClose={() => setShowMessage(false)} />}
     </header>
   );
 }

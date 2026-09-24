@@ -4,6 +4,7 @@ const User = require('./User');
 const generateToken = require('./generateToken');
 const sendEmail = require('../../shared/utils/sendEmail');
 const { protect } = require('../../shared/middleware/auth');
+const DOUALA_NEIGHBORHOODS = require('../../shared/constants/doualaNeighborhoods');
 
 function generateOtp() {
   return Math.floor(100000 + Math.random() * 900000).toString();
@@ -28,12 +29,19 @@ async function sendOtpToUser(user) {
 }
 
 // SIGNUP — creates an unverified account, sends a verification code
+
+
 router.post('/signup', async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, location } = req.body;
 
     if (!['buyer', 'seller'].includes(role)) {
       return res.status(400).json({ message: 'Role must be buyer or seller' });
+    }
+
+    // location is optional now — only validate it if the person chose one
+    if (location && !DOUALA_NEIGHBORHOODS.includes(location)) {
+      return res.status(400).json({ message: 'Please select a valid Douala neighborhood' });
     }
 
     const existingUser = await User.findOne({ email });
@@ -41,14 +49,10 @@ router.post('/signup', async (req, res) => {
       return res.status(400).json({ message: 'Email already registered' });
     }
 
-    const user = await User.create({ name, email, password, role });
+    const user = await User.create({ name, email, password, role, location: location || undefined });
     await sendOtpToUser(user);
 
-    // no token yet — they must verify their email first
-    res.status(201).json({
-      message: 'Account created. Check your email for a verification code.',
-      email: user.email
-    });
+    res.status(201).json({ message: 'Account created. Check your email for a verification code.', email: user.email });
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }

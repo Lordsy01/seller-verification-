@@ -157,4 +157,19 @@ router.get('/mine', protect, async (req, res) => {
   }
 });
 
+// ADMIN: update delivery status
+router.patch('/:id/delivery-status', protect, requireRole('admin'), async (req, res) => {
+  try {
+    const { deliveryStatus } = req.body;
+    if (!['not_started', 'out_for_delivery', 'delivered'].includes(deliveryStatus)) {
+      return res.status(400).json({ message: 'Invalid delivery status' });
+    }
+    const order = await Order.findByIdAndUpdate(req.params.id, { deliveryStatus }, { new: true });
+    if (!order) return res.status(404).json({ message: 'Order not found' });
+    res.json({ message: 'Delivery status updated', data: order });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
 module.exports = router;

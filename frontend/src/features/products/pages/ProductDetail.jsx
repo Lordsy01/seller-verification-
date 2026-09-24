@@ -4,6 +4,7 @@ import api from '../../../shared/api';
 import BuyNowModal from '../../orders/components/BuyNowModal';
 import Navbar from '../../../shared/components/Navbar';
 import Footer from '../../../shared/components/Footer';
+import MessageModal from '../../messages/components/MessageModal';
 import '../ProductDetail.css';
 
 function ProductDetail() {
@@ -14,6 +15,7 @@ function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [showBuy, setShowBuy] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -68,18 +70,13 @@ function ProductDetail() {
             <button className="btn btn-accent btn-block" onClick={() => setShowBuy(true)}>
               Buy Now
             </button>
+            <button className="btn btn-outline btn-block" style={{ marginTop: 10 }} onClick={() => setShowMessage(true)}>
+              Message Us About This Product
+            </button>
 
             <div className="product-detail__vendor">
-              <div className="product-detail__vendor-avatar">{product.seller?.name?.[0] || 'V'}</div>
-              <div>
-                <p className="product-detail__vendor-name">{product.seller?.name}</p>
-                {product.seller?.verificationStatus === 'approved' && (
-                  <p className="product-detail__vendor-badge">
-                    <span className="material-symbols-outlined" style={{ fontSize: 14 }}>verified</span>
-                    Verified Vendor
-                  </p>
-                )}
-              </div>
+              <span className="material-symbols-outlined" style={{ color: 'var(--color-primary)' }}>verified</span>
+              <p className="product-detail__vendor-name">Sold by a verified DoualaMarket vendor</p>
             </div>
           </div>
         </div>
@@ -91,6 +88,14 @@ function ProductDetail() {
           product={{ ...product, image: imageUrl }}
           quantity={quantity}
           onClose={() => setShowBuy(false)}
+        />
+      )}
+
+      {showMessage && (
+        <MessageModal
+          productId={product._id}
+          productTitle={product.title}
+          onClose={() => setShowMessage(false)}
         />
       )}
     </div>

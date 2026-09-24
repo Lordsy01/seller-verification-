@@ -6,12 +6,25 @@ const upload = require('../../shared/middleware/upload');
 const { protect, requireRole } = require('../../shared/middleware/auth');
 
 // PUBLIC: get all active gigs (for the homepage)
+// PUBLIC: get all active gigs (for the homepage)
 router.get('/', async (req, res) => {
   try {
-    const gigs = await Gig.find({ active: true })
-      .populate('seller', 'name')
-      .sort({ createdAt: -1 });
+    const gigs = await Gig.find({ active: true }).sort({ createdAt: -1 });
+    // deliberately NOT populating seller — buyers should not see who's selling
     res.json(gigs);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+// PUBLIC: get one product by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+    if (!gig || !gig.active) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.json(gig); // no seller info exposed
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }

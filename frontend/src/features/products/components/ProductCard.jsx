@@ -15,7 +15,7 @@ function ProductCard({ product }) {
         <img src={product.image} alt={product.title} />
       </Link>
       <div className="product-card__body">
-        <p className="product-card__vendor">{product.seller?.name}</p>
+        {/* <p className="product-card__vendor">{product.seller?.name}</p> */}
         <Link to={`/product/${product._id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
           <h3 className="product-card__title">{product.title}</h3>
         </Link>

@@ -12,6 +12,11 @@ const orderSchema = new mongoose.Schema({
     price: Number,
     quantity: Number
   }],
+  deliveryStatus: {
+    type: String,
+    enum: ['not_started', 'out_for_delivery', 'delivered'],
+    default: 'not_started'
+  },
   subtotal: { type: Number, required: true },
   deliveryFee: { type: Number, default: 0 },
   total: { type: Number, required: true },

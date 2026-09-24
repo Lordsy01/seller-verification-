@@ -8,6 +8,16 @@ function AdminOverview() {
   const [stats, setStats] = useState({ products: 0, orders: 0, revenue: 0, pendingVerifications: 0 });
   const [recentOrders, setRecentOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const handleDeliveryChange = async (orderId, deliveryStatus) => {
+    try {
+      await api.patch(`/orders/${orderId}/delivery-status`, { deliveryStatus });
+      setRecentOrders((prev) =>
+        prev.map((o) => (o._id === orderId ? { ...o, deliveryStatus } : o))
+      );
+    } catch (err) {
+      alert('Failed to update delivery status.');
+    }
+  };
 
   useEffect(() => {
     async function load() {
@@ -76,16 +86,35 @@ function AdminOverview() {
         </div>
         <table className="data-table">
           <thead>
-            <tr><th>Buyer</th><th>Total</th><th>Status</th><th>Date</th></tr>
+            <tr><th>Buyer</th><th>Total</th><th>Payment</th><th>Delivery</th><th>Date</th></tr>
           </thead>
           <tbody>
-            {loading && <tr><td colSpan="4" className="empty-cell">Loading...</td></tr>}
-            {!loading && recentOrders.length === 0 && <tr><td colSpan="4" className="empty-cell">No orders yet.</td></tr>}
+            {loading && <tr><td colSpan="5" className="empty-cell">Loading...</td></tr>}
+            {!loading && recentOrders.length === 0 && <tr><td colSpan="5" className="empty-cell">No orders yet.</td></tr>}
             {recentOrders.map((o) => (
               <tr key={o._id}>
                 <td className="cell-title">{o.buyer?.name}</td>
                 <td className="cell-sub">XAF {o.total.toLocaleString()}</td>
-                <td><span className={`badge badge--${o.status === 'paid' ? 'approved' : o.status === 'failed' ? 'rejected' : 'pending'}`}>{o.status}</span></td>
+                <td>
+                  <span className={`badge badge--${o.status === 'paid' ? 'approved' : o.status === 'failed' ? 'rejected' : 'pending'}`}>
+                    {o.status}
+                  </span>
+                </td>
+                <td>
+                  {o.status === 'paid' ? (
+                    <select
+                      value={o.deliveryStatus || 'not_started'}
+                      onChange={(e) => handleDeliveryChange(o._id, e.target.value)}
+                      style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid var(--color-border)', fontSize: '0.8rem' }}
+                    >
+                      <option value="not_started">Not started</option>
+                      <option value="out_for_delivery">Out for delivery</option>
+                      <option value="delivered">Delivered</option>
+                    </select>
+                  ) : (
+                    <span className="cell-sub">—</span>
+                  )}
+                </td>
                 <td className="cell-sub">{new Date(o.createdAt).toLocaleDateString()}</td>
               </tr>
             ))}

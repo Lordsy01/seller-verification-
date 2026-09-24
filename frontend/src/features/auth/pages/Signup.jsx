@@ -9,10 +9,16 @@ function Signup() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { login } = useAuth();
+  const DOUALA_NEIGHBORHOODS = [
+    'Akwa', 'Bonanjo', 'Bonapriso', 'Bali', 'Deido',
+    'New Bell', 'Bepanda', 'Ndokoti', 'Makepe', 'Logbaba',
+    'PK8', 'PK10', 'PK12', 'PK14', 'Bonaberi',
+    'Kotto', 'Ndogbong', 'Village', 'Cite des Palmiers', 'Yassa'
+  ];
 
   const [step, setStep] = useState('form'); // 'form' | 'otp'
   const [formData, setFormData] = useState({
-    name: '', email: '', password: '',
+    name: '', email: '', password: '', location: '',
     role: searchParams.get('role') === 'seller' ? 'seller' : 'buyer'
   });
   const [otp, setOtp] = useState('');
@@ -91,7 +97,8 @@ function Signup() {
             <button
               key={r} type="button"
               onClick={() => setFormData({ ...formData, role: r })}
-              className={`role-toggle__btn ${formData.role === r ? 'is-active' : ''}`}
+              className={`
+                role-toggle__btn ${formData.role === r ? 'is-active' : ''}`}
             >
               {r === 'seller' ? 'Vendor' : 'Buyer'}
             </button>
@@ -121,7 +128,24 @@ function Signup() {
           Already have an account? <Link to="/login">Log In</Link>
         </p>
       </div>
+    </div>,
+
+    <div className="field">
+      <label>Neighborhood (Douala only)</label>
+      <select
+        name="location"
+        value={formData.location}
+        onChange={handleChange}
+        required
+        style={{ width: '100%', padding: '12px 14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)', background: 'var(--color-bg)', fontSize: '0.95rem' }}
+      >
+        <option value="">Select your neighborhood</option>
+        {DOUALA_NEIGHBORHOODS.map((n) => (
+          <option key={n} value={n}>{n}</option>
+        ))}
+      </select>
     </div>
+
   );
 }
 
