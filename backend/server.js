@@ -1,48 +1,41 @@
-import { useState, useEffect } from 'react';
-import api from '../../../shared/api';
-import Navbar from '../../../shared/components/Navbar';
-import Footer from '../../../shared/components/Footer';
-import '../../orders/pages/OrderHistory.css';
+require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
-function MyMessages() {
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
+const authRoutes = require('./features/auth/authRoutes');
+const verificationRoutes = require('./features/verification/verificationRoutes');
+const gigRoutes = require('./features/products/gigRoutes');
+const userRoutes = require('./features/users/userRoutes');
+const orderRoutes = require('./features/orders/orderRoutes');
+const messageRoutes = require('./features/messages/messageRoutes');
 
-  useEffect(() => {
-    api.get('/messages/mine')
-      .then((res) => setMessages(res.data))
-      .finally(() => setLoading(false));
-  }, []);
+const app = express();
 
-  return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <Navbar />
-      <main style={{ flex: 1 }} className="orders-page container">
-        <h1>My Messages</h1>
-        {loading && <p className="muted-note">Loading...</p>}
-        {!loading && messages.length === 0 && <p className="muted-note">No messages yet.</p>}
-        <div className="orders-list">
-          {messages.map((m) => (
-            <div key={m._id} className="order-card">
-              <p className="order-card__date">
-                {m.product ? `About: ${m.product.title}` : 'General inquiry'} · {new Date(m.createdAt).toLocaleString()}
-              </p>
-              <p style={{ marginTop: 8 }}>{m.body}</p>
-              {m.reply ? (
-                <div style={{ marginTop: 12, padding: 12, background: 'var(--color-bg)', borderRadius: 8 }}>
-                  <strong style={{ fontSize: '0.85rem' }}>Reply:</strong>
-                  <p style={{ marginTop: 4 }}>{m.reply}</p>
-                </div>
-              ) : (
-                <p className="muted-note" style={{ marginTop: 10 }}>Awaiting reply...</p>
-              )}
-            </div>
-          ))}
-        </div>
-      </main>
-      <Footer />
-    </div>
-  );
-}
+// ---- middleware (must all come before routes) ----
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 
-export default MyMessages;
+// ---- routes ----
+app.use('/api/auth', authRoutes);
+app.use('/api/verifications', verificationRoutes);
+app.use('/api/gigs', gigRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/messages', messageRoutes);
+
+app.get('/', (req, res) => {
+  res.send('Seller Verification API running');
+});
+
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch((err) => console.error('MongoDB connection error:', err));
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
