@@ -16,7 +16,9 @@ import Checkout from './features/orders/pages/Checkout';
 import ProductDetail from './features/products/pages/ProductDetail';
 import OrderHistory from './features/orders/pages/OrderHistory';
 import SellerOrders from './features/orders/pages/SellerOrders';
-import MyMessages from './features/Messages/MyMessages';
+import MyMessages from './features/messages/pages/MyMessages';
+import AdminMessages from './features/admin/pages/AdminMessages';
+
 
 import AdminOverview from './features/admin/pages/AdminOverview';
 import AdminDashboard from './features/admin/pages/AdminDashboard';
@@ -24,7 +26,6 @@ import AdminProducts from './features/admin/pages/AdminProducts';
 import AdminUsers from './features/admin/pages/AdminUsers';
 import AdminSettings from './features/admin/pages/AdminSettings';
 import AdminHelp from './features/admin/pages/AdminHelp';
-import AdminMessages from './features/admin/pages/AdminMessages';
 
 function App() {
   return (

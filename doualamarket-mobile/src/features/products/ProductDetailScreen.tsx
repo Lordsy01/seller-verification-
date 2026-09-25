@@ -6,10 +6,19 @@ import api from '../../shared/api/api';
 import { API_BASE_URL } from '../../shared/api/config';
 import { Product } from '../../shared/types';
 import BuyNowSheet from '../orders/BuyNowSheet';
+import { useCart } from '../orders/CartContext';
 
 export default function ProductDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { addItem } = useCart();
+  const [added, setAdded] = useState(false);
+
+  const handleAddToCart = () => {
+    addItem({ ...product, image: imageUrl });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1500);
+  };
 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
@@ -65,9 +74,14 @@ export default function ProductDetailScreen() {
             </View>
           </View>
 
-          <TouchableOpacity style={styles.buyButton} onPress={() => setShowBuy(true)}>
-            <Text style={styles.buyButtonText}>Buy Now</Text>
-          </TouchableOpacity>
+          <TouchableOpacity style={styles.addToCartButton} onPress={handleAddToCart}>
+          <Ionicons name="cart-outline" size={18} color="#145C3F" />
+          <Text style={styles.addToCartText}>{added ? 'Added!' : 'Add to Cart'}</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.buyButton} onPress={() => setShowBuy(true)}>
+          <Text style={styles.buyButtonText}>Buy Now</Text>
+        </TouchableOpacity>
 
           <View style={styles.vendorBox}>
             <Ionicons name="shield-checkmark" size={22} color="#145C3F" />
@@ -94,6 +108,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff', borderRadius: 20, width: 38, height: 38,
     justifyContent: 'center', alignItems: 'center', elevation: 3,
   },
+  addToCartButton: {
+    flexDirection: 'row', gap: 8, justifyContent: 'center', alignItems: 'center',
+    borderWidth: 1.5, borderColor: '#145C3F', borderRadius: 10, padding: 15, marginTop: 18,
+  },
+  addToCartText: { fontWeight: '700', fontSize: 14, color: '#145C3F' },
   image: { width: '100%', height: 320, backgroundColor: '#EDEEF5' },
   body: { padding: 20 },
   title: { fontSize: 20, fontWeight: '800' },

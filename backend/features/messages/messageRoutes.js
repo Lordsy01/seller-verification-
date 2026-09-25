@@ -35,7 +35,7 @@ router.get('/mine', protect, async (req, res) => {
     }
 });
 
-// ADMIN: view every message
+// ADMIN: view every message, optionally filtered by status
 router.get('/', protect, requireRole('admin'), async (req, res) => {
     try {
         const { status } = req.query;
